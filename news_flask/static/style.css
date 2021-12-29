@@ -1,0 +1,17 @@
+p.card-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 25px;
+  -webkit-line-clamp: 3;
+  height: 75px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+tr > td {
+  word-wrap: break-word;
+  font-size: 0.75rem;
+}

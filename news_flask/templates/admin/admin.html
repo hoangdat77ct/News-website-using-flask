@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+
+{% block title %} ADMIN {% endblock %}
+{% block body %}
+<div class="container-fuild">
+    <div class="row">
+        <div class="col">
+            <div class="jumbotron">
+                <h2 class="mx-5">Manage <b>Articles </b>
+                  <button type="button"  class="btn btn-success float-right mx-5"
+                data-toggle="modal" data-target="#mymodal">Add New Articles</button>
+               </h2>
+                <table class="table table-bordered">
+                     <thead>
+                        <tr class="d-flex flex-nowrap" >
+                           <th style="width: 4%;">ID</th>
+                           <th style="width: 10%;">URL</th>
+                           <th style="width: 10%;">Title</th>
+                           <th style="width: 9%;">Authors</th>
+                           <th style="width: 10%;">Tags</th>
+                           <th style="width: 20%;">Summary</th>
+                           <th style="width: 7%;">Publish Date</th>
+                           <th style="width: 7%;">Image</th>
+                           <th style="width: 7%;">Domain</th>
+                           <th style="width: 13%;">Action</th>
+                        </tr>
+                     </thead>
+                     {% for row in articles %}
+                     <tbody>
+                        <tr class="d-flex flex-nowrap pt-2">
+                           <td style="width: 4%;">{{ row[8] }}</td>
+                           <td style="width: 10%;">{{ row[0] }}</td>
+                           <td style="width: 10%;">{{ row[1] }}</td>
+                           <td style="width: 9%;">{{ row[2] }}</td>
+                           <td style="width: 10%;">{{ row[3] }}</td>
+                           <td style="width: 20%;">{{ row[4] }}</td>
+                           <td style="width: 7%;">{{ row[5] }}</td>
+                           <td style="width: 7%;">
+                              <img src="{{ row[6] }}" alt="" style="width: 50px; height:50px;">
+                           </td>
+                           <td style="width: 7%;">{{ row[7] }}</td>
+                           <td style="width: 13%; vertical-align: middle;">
+                              <a href="admin/update/{{row[8]}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row[8]}}">Edit</a>
+                              <a href="admin/delete/{{row[8]}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
+                           </td>
+                        </tr>
+                     </tbody>
+                     <div id="modaledit{{row[8]}}" class="modal fade" role="dialog" style="width: 100%">
+                        <div class="modal-dialog">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <h4 class="modal-title">Update Information</h4>
+                              </div>
+                              <div class="modal-body">
+                                 <form action="{{url_for('admin.update_news')}}" method="POST">
+                                    <div class="form-group">
+                                       <input type="hidden"  name="id" value="{{ row[8] }}">
+                                       <label>Url:</label>
+                                       <input type="url"  name="url" value="{{ row[0] }}">
+                                    </div>
+                                    <div class="form-group">
+                                       <label>Title:</label>
+                                       <input type="text" class="form-control" name="title" value="{{ row[1] }}">
+                                    </div>
+                                    <div class="form-group">
+                                       <label>Authors:</label>
+                                       <input type="text" class="form-control" name="authors" value="{{ row[2] }}">
+                                    </div>
+                                    <div class="form-group">
+                                       <label>Tags:</label>
+                                       <input type="text" class="form-control" name="tags" value="{{ row[3] }}">
+                                    </div>
+                                    <div class="form-group">
+                                       <label>Summary:</label>
+                                       <input type="text" class="form-control" name="summary" value="{{ row[4] }}">
+                                    </div>
+                                    <div class="form-group">
+                                       <label>Date:</label>
+                                       <input type="date" class="form-control" name="date" value="{{ row[5] }}">
+                                    </div>
+                                    <div class="form-group">
+                                       <label>Image:</label>
+                                       <input type="url" class="form-control" name="url_image" value="{{ row[6] }}">
+                                    </div>
+                                    <div class="form-group">
+                                       <label>Domain:</label>
+                                       <input type="text" class="form-control" name="domain" value="{{ row[7] }}">
+                                    </div>
+                                    <div class="form-group">
+                                       <button class="btn btn-primary" type="submit">Update</button>
+                                    </div>
+                                 </form>
+                              </div>
+                              <div class="modal-footer">
+                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     {% endfor %}
+               </table>
+               <ul class="pagination justify-content-center">
+                  {% for i in range(1, pages+1) %}
+                  <li class="page-item"><a class="page-link" href="{{ url_for('admin.admin', page=i) }}">{{ i }}</a></li>
+                  {% endfor %}
+                </ul>
+            </div>
+         </div>
+         <div id="mymodal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h4 class="modal-title">Add Articles</h4>
+                  </div>
+                  <div class="modal-body">
+                     <form action="{{url_for('admin.insert_news')}}" method="POST">
+                        <div class="form-group">
+                           <label>Url:</label>
+                           <input type="url" class="form-control" name="url" required="1">
+                        </div>
+                        <div class="form-group">
+                           <label>Title:</label>
+                           <input type="text" class="form-control" name="title" required="1">
+                        </div>
+                        <div class="form-group">
+                           <label>Authors:</label>
+                           <input type="text" class="form-control" name="authors" required="1">
+                        </div>
+                        <div class="form-group">
+                           <label>Tags:</label>
+                           <input type="text" class="form-control" name="tags" required="1">
+                        </div>
+                        <div class="form-group">
+                           <label>Summary:</label>
+                           <input type="text" class="form-control" name="summary" required="1">
+                        </div>
+                        <div class="form-group">
+                           <label>Date:</label>
+                           <input type="date" class="form-control" name="date" required="1">
+                        </div>
+                        <div class="form-group">
+                           <label>Image url:</label>
+                           <input type="url" class="form-control" name="url_image" required="1">
+                        </div>
+                        <div class="form-group">
+                           <label>Domain:</label>
+                           <input type="url" class="form-control" name="domain" required="1">
+                        </div>
+                        <div class="form-group">
+                           <button class="btn btn-primary" type="submit">Add Articles</button>
+                        </div>
+                     </form>
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+</div>
+{% endblock %}

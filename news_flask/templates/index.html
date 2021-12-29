@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo.png') }}" type="image/x-icon">
+    <title>News</title>
+</head>
+<body>
+  <header class="py-3 mb-3 border-bottom sticky-top bg-dark">
+    <div class="container d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
+        <a href="{{ url_for('news.index') }}" class="d-flex align-items-center col-lg-4 mb-2 mb-lg-0 link-dark text-decoration-none">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo" width="50">
+        </a>
+        <form class=" d-flex align-items-center w-100 me-3">
+          <input type="search" class="form-control me-2" placeholder="Search..." aria-label="Search">
+          <button class="btn btn-primary" type="button">Search</button>
+        </form>
+    </div>
+  </header>
+    <div class="container">
+      <div class="row mb-2">
+          {% for row in posts %}
+          {% if row[4] %}
+          <div class="col-md-12">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+              <div class="col p-4 d-flex flex-column position-static">
+                <a href="{{ row[0] }}" class="mb-0"><h3>{{ row[1] }}</h3></a>
+                <a href="http://{{ row[7] }}" class="mb-1 text-muted"><i >{{ row[7] }}</i></a>
+                {% if row[2] %}
+                  <i class="mb-1 text-muted">{{ row[5] }}<span> by </span>{{ row[2] }}</i>
+                {% else %}
+                  <i class="mb-1 text-muted">{{ row[5] }}</i>
+                {% endif %}
+                <p class="card-text mb-auto">{{ row[4] }}</p>
+                <strong class="d-inline-block mb-2 ">Tags: <i class="text-primary">{{ row[3] }}</i></strong>
+                <a class="btn btn-primary" href="{{ row[0] }}" >Continue reading</a>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                  <img class="article-thumbnail" src="{{ row[6] }}" alt="image thumbnail"width="250" height="250"/>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+      </div>
+      <ul class="pagination justify-content-center">
+        {% for i in range(1, pages+1) %}
+        <li class="page-item"><a class="page-link" href="{{ url_for('news.index', page=i) }}">{{ i }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+</body>
+</html>
